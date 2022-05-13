@@ -6,14 +6,14 @@ MiStoryView is a simple configurable library to integrate instagram like stories
 ![image](/art/MiStoryView Introduction.gif)
 
 # Key features
-* Set list of image urls in MiStoryView.
+* Set list of image url in MiStoryView.
 * Set duration for particular story (in millisecond).
-* Set different animations while swiping between multiple stories.
-* Tap on right side of image to invoke next story.
-* Tap on left side of image to invoke previous story.
+* Set any of the predefined animations, while swiping between multiple stories.
+* Move to back and forth story by tapping on right and left part of an image.
 * Pause progress while keeping touch on an image.
-* Move to whole next story if user is at the last item of story or exit the story detail view.
-* Move to whole previou story if user is at the first item of story or exit the story detail view.
+* Move to whole next story or exit full story view, if user is at the last item of story.
+* Move to whole previou story or exit full story view, if user is at the first item of story.
+* Story indicator color changes once it is seen.
 
 # Usage
 **Dependencies**

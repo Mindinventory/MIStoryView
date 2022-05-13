@@ -164,7 +164,23 @@ MiStoryView is a simple configurable library to integrate instagram like stories
                 }
         }
 
-That's it :thumbsup: and you're good to go :rocket:
+# XML Properties
+
+|  Properties          |  Description               |
+|----------------------|----------------------------|
+|  miPageTransformer   |  Set different animation while switching between stories |
+|  miPendingIndicatorColor  | Set color for unseen story  |
+|  miStoryImageRadius  | Set size of round image  |
+|  miStoryItemIndicatorWidth  |  Set width of progress indicator  |
+|  miSpaceBetweenImageAndIndicator  |  Set margin between two progress bar indicator  |
+|  miVisitedIndicatorColor  |  Set color for seen story  |
+|  miFullScreenProgressBarHeight | Set height of progress in full story view |
+|  miFullScreenGapBetweenProgressBar | Set margin between two progress bar indicator in full story view |
+| miFullScreenProgressBarPrimaryColor | Set primary color of progress bar in full story view |
+| miFullScreenProgressBarSecondaryColor | Set secondary color of progress bar in full story view |
+| miFullScreenSingleStoryDisplayTime | Set time for particular story (i.e in milliseconds) |
+
+That's it :thumbsup: and you're good to go 🚀
 
 # Guideline to report an issue/feature request
 It would be very helpful for us, if the reporter can share the below things to understand the root cause of the issue.

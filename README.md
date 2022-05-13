@@ -229,6 +229,6 @@ MIStoryView is [MIT-licensed](https://github.com/Mindinventory/MIStoryView/blob/
 If you use our open-source libraries in your project, please make sure to credit us and Give a star to www.mindinventory.com
 
 <p><h4>Please feel free to use this component and Let us know if you are interested to building Apps or Designing Products.</h4>
-<a href="https://www.mindinventory.com/contact-us.php?utm_source=gthb&utm_medium=repo&utm_campaign=react-native-speed-view" target="__blank">
+<a href="https://www.mindinventory.com/contact-us.php?utm_source=gthb&utm_medium=repo&utm_campaign=rMIStoryView" target="__blank">
 <img src="https://github.com/Sammindinventory/MindInventory/blob/main/hirebutton.png" width="203" height="43"  alt="app development">
 </a>

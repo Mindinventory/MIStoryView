@@ -2,7 +2,6 @@ package com.mistory.mistoryview.home
 
 import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +11,6 @@ import com.example.mistoryview.R
 import com.example.mistoryview.databinding.ActivityMainBinding
 import com.mistory.mistoryview.data.entity.MiUserStoryModel
 import com.mistory.mistoryview.ui.activity.MiStoryDisplayActivity
-import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
@@ -67,5 +65,7 @@ class MainActivity : AppCompatActivity() {
                 startPostponedEnterTransition()
             }
         }
+
+        mBinding.tabLayout.selectTab(mBinding.tabLayout.getTabAt(1))
     }
 }

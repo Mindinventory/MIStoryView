@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MiStoryView">
+        <attr name="miStoryImageRadius" format="dimension" />
+        <attr name="miStoryItemIndicatorWidth" format="dimension" />
+        <attr name="miSpaceBetweenImageAndIndicator" format="dimension" />
+        <attr name="miPendingIndicatorColor" format="color" />
+        <attr name="miVisitedIndicatorColor" format="color" />
+        <attr name="miPageTransformer" format="enum">
+            <enum name="BACKGROUND_TO_FOREGROUND_TRANSFORMER" value="0"/>
+            <enum name="CUBE_OUT_TRANSFORMER" value="1"/>
+            <enum name="FOREGROUND_TO_BACKGROUND_TRANSFORMER" value="2"/>
+            <enum name="ZOOM_OUT_PAGE_TRANSFORMER" value="3"/>
+
+            <enum name="CUBE_IN_TRANSFORMER" value="4"/>
+            <enum name="ROTATE_DOWN_PAGE_TRANSFORMER" value="5"/>
+            <enum name="ROTATE_UP_PAGE_TRANSFORMER" value="6"/>
+            <enum name="ZOOM_IN_TRANSFORMER" value="7"/>
+        </attr>
+
+        <!--Full screen horizontal progress attributes-->
+        <!--Set height of progress bar.-->
+        <attr name="miFullScreenProgressBarHeight" format="dimension" />
+        <!--Set margin between two progress bars.-->
+        <attr name="miFullScreenGapBetweenProgressBar" format="dimension" />
+        <!--Set primary color of progress bar.-->
+        <attr name="miFullScreenProgressBarPrimaryColor" format="color" />
+        <!--Set color of progress i.e secondary color of progress bar.-->
+        <attr name="miFullScreenProgressBarSecondaryColor" format="color" />
+        <!--Set duration for single story view.-->
+        <attr name="miFullScreenSingleStoryDisplayTime" format="integer" />
+    </declare-styleable>
+
+    <declare-styleable name="MiStoryHorizontalProgressView">
+        <!--Set height of progress bar.-->
+        <attr name="miProgressBarHeight" format="dimension" />
+        <!--Set margin between two progress bars.-->
+        <attr name="miGapBetweenProgressBar" format="dimension" />
+        <!--Set primary color of progress bar.-->
+        <attr name="miProgressBarPrimaryColor" format="color" />
+        <!--Set color of progress i.e secondary color of progress bar.-->
+        <attr name="miProgressBarSecondaryColor" format="color" />
+        <!--Set duration for single story view.-->
+        <attr name="miSingleStoryDisplayTime" format="integer" />
+    </declare-styleable>
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="green_200">#89FBF1</color>
+    <color name="green_500">#008176</color>
+    <color name="green_700">#008176</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="greenDark">#001210</color>
+    <color name="red_love">#ed184f</color>
+    <color name="progress_bg">#676767</color>
+</resources>

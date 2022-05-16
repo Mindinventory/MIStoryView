@@ -221,7 +221,7 @@ It would be very helpful for us, if the reporter can share the below things to u
 
 ## LICENSE!
 
-MIStoryView is [MIT-licensed](https://github.com/Mindinventory/MIStoryView/blob/main/LICENSE).
+MIStoryView is [MIT-licensed](https://github.com/Mindinventory/MIStoryView/blob/master/LICENSE).
 
 
 # Let us know!

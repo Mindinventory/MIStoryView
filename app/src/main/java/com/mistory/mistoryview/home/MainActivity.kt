@@ -6,11 +6,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.mistoryview.R
 import com.example.mistoryview.databinding.ActivityMainBinding
 import com.mistory.mistoryview.data.entity.MiUserStoryModel
 import com.mistory.mistoryview.ui.activity.MiStoryDisplayActivity
+import com.mistory.mistoryview.utils.DividerItemDecorator
 
 class MainActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityMainBinding
@@ -52,16 +52,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        val divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
-        ContextCompat.getDrawable(this, R.drawable.divider)?.let { divider.setDrawable(it) }
-
         with(mBinding.rvStory) {
             setHasFixedSize(true)
-            addItemDecoration(divider)
+            ContextCompat.getDrawable(this@MainActivity, R.drawable.divider)
+                ?.let { DividerItemDecorator(it) }?.let {
+                    addItemDecoration(it)
+                }
             storyAdapter =
                 StoryAdapter(mViewModel.mListOfUsers, { launcher }, { this@MainActivity })
             adapter = storyAdapter
-            addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            addOnLayoutChangeListener { _, _, _, _, _, _, _, _, _ ->
                 startPostponedEnterTransition()
             }
         }

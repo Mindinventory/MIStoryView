@@ -3,7 +3,7 @@
 MiStoryView is a simple configurable library to integrate stories features into your social media android application.
 
 ### Preview
-![image](/art/artMIStoryView1.gif)
+![image](/art/MiStoryView.gif)
 
 # Key features
 * Set a list of image URLs in MiStoryView.

@@ -1,6 +1,5 @@
 # MiStoryView [![](https://jitpack.io/v/Mindinventory/MIStoryView.svg)](https://jitpack.io/#Mindinventory/MIStoryView)
 
-
 MiStoryView is a simple configurable library to integrate stories features into your social media android application.
 
 ### Preview
@@ -8,7 +7,7 @@ MiStoryView is a simple configurable library to integrate stories features into 
 
 # Key features
 * Set a list of image URLs in MiStoryView.
-* Custimize duration for the particular story (in milliseconds).
+* Customize duration for the particular story (in milliseconds).
 * Set any of the predefined animations, while swiping between multiple stories.
 * Move to the back and forth story by tapping on the right and left parts of an image.
 * Hold story by just simply touch on it.

@@ -10,4 +10,5 @@
     <color name="greenDark">#001210</color>
     <color name="red_love">#ed184f</color>
     <color name="progress_bg">#676767</color>
+    <color name="divider_color">#989898</color>
 </resources>

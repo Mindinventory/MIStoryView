@@ -1,24 +1,53 @@
-MiStoryView
-====
+# MiStoryView [![](https://jitpack.io/v/Mindinventory/MIStoryView.svg)](https://jitpack.io/#Mindinventory/MIStoryView)
 
-MiStoryView is a simple configurable library to integrate instagram like stories in your android application.
 
-![image](/art/MiStoryView Introduction.gif)
+MiStoryView is a simple configurable library to integrate stories features into your social media android application.
+
+### Preview
+![image](/art/artMIStoryView1.gif)
 
 # Key features
-* Set list of image urls in MiStoryView.
-* Set duration for particular story (in millisecond).
-* Set different animations while swiping between multiple stories.
-* Tap on right side of image to invoke next story.
-* Tap on left side of image to invoke previous story.
-* Pause progress while keeping touch on an image.
-* Move to whole next story if user is at the last item of story or exit the story detail view.
-* Move to whole previou story if user is at the first item of story or exit the story detail view.
+* Set a list of image URLs in MiStoryView.
+* Customized duration for the particular story (in milliseconds).
+* Set any of the predefined animations, while swiping between multiple stories.
+* Move to the back and forth story by tapping on the right and left parts of an image.
+* Hold story by just simply touch on it.
+* Move to the whole next story or exit full story view, if a user is at the last item of the story.
+* Move to the whole previous story or exit the full story view, if a user is at the first item of the story.
+* Story indicator color changes once it is seen.
+
 
 # Usage
 **Dependencies**
-> Insert gradle dependency here.
+- **Step 1: Add the JitPack repository in your project build.gradle file**
+```bash
+allprojects {
+	    repositories {
+		    ...
+		    maven { url 'https://jitpack.io' }
+	    }
+    }
+```
 
+ **or**
+    
+If Android studio version is Arctic Fox or upper then add it in your settings.gradle:
+```bash
+ dependencyResolutionManagement {
+    		repositories {
+        		...
+        		maven { url 'https://jitpack.io' }
+    		}
+	   }
+```
+
+- **Step 2: Add the dependency in your app module build.gradle file**
+```bash
+dependencies {
+		    ...
+	        implementation 'com.github.Mindinventory:MIStoryView:0.0.1'
+	}
+```
 
 **Implementation**
 * Step 1 : Provide a list of stories. (Note : Use MiUserStoryModel class only to provide list of stories)
@@ -164,7 +193,23 @@ MiStoryView is a simple configurable library to integrate instagram like stories
                 }
         }
 
-That's it :thumbsup: and you're good to go :rocket:
+# XML Properties
+
+|  Properties          |  Description               |
+|----------------------|----------------------------|
+|  miPageTransformer   |  Set different animation while switching between stories |
+|  miPendingIndicatorColor  | Set color for unseen story  |
+|  miStoryImageRadius  | Set size of round image  |
+|  miStoryItemIndicatorWidth  |  Set width of progress indicator  |
+|  miSpaceBetweenImageAndIndicator  |  Set margin between two progress bar indicator  |
+|  miVisitedIndicatorColor  |  Set color for seen story  |
+|  miFullScreenProgressBarHeight | Set height of progress in full story view |
+|  miFullScreenGapBetweenProgressBar | Set margin between two progress bar indicator in full story view |
+| miFullScreenProgressBarPrimaryColor | Set primary color of progress bar in full story view |
+| miFullScreenProgressBarSecondaryColor | Set secondary color of progress bar in full story view |
+| miFullScreenSingleStoryDisplayTime | Set time for particular story (i.e in milliseconds) |
+
+That's it :thumbsup: and you're good to go 🚀
 
 # Guideline to report an issue/feature request
 It would be very helpful for us, if the reporter can share the below things to understand the root cause of the issue.
@@ -173,3 +218,17 @@ It would be very helpful for us, if the reporter can share the below things to u
 - Code snippet.
 - Logs if applicable.
 - Screenshot/video with steps to reproduce the issue.
+
+## LICENSE!
+
+MIStoryView is [MIT-licensed](https://github.com/Mindinventory/MIStoryView/blob/main/LICENSE).
+
+
+# Let us know!
+
+If you use our open-source libraries in your project, please make sure to credit us and Give a star to www.mindinventory.com
+
+<p><h4>Please feel free to use this component and Let us know if you are interested to building Apps or Designing Products.</h4>
+<a href="https://www.mindinventory.com/contact-us.php?utm_source=gthb&utm_medium=repo&utm_campaign=rMIStoryView" target="__blank">
+<img src="https://github.com/Sammindinventory/MindInventory/blob/main/hirebutton.png" width="203" height="43"  alt="app development">
+</a>

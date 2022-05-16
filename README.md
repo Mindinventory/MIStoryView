@@ -1,5 +1,6 @@
 # MiStoryView [![](https://jitpack.io/v/Mindinventory/MIStoryView.svg)](https://jitpack.io/#Mindinventory/MIStoryView)
 
+MiStoryView is a simple configurable library to integrate instagram like stories in your android application.
 
 MiStoryView is a simple configurable library to integrate stories features into your social media android application.
 

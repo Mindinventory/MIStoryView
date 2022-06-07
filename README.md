@@ -1,9 +1,9 @@
-# MiStoryView [![](https://jitpack.io/v/Mindinventory/MIStoryView.svg)](https://jitpack.io/#Mindinventory/MIStoryView)
+# MiStoryView [![](https://jitpack.io/v/Mindinventory/MIStoryView.svg)](https://jitpack.io/#Mindinventory/MIStoryView) ![](https://img.shields.io/github/languages/top/Mindinventory/MIStoryView) ![](https://img.shields.io/github/license/mindinventory/MIStoryView)
 
 MiStoryView is a simple configurable library to integrate stories features into your social media android application.
 
 ### Preview
-![image](/art/artMIStoryView1.gif)
+![image](/art/MiStoryView.gif)
 
 # Key features
 * Set a list of image URLs in MiStoryView.

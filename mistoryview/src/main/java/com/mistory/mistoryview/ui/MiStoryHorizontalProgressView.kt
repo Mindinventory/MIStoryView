@@ -9,13 +9,17 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import android.view.animation.LinearInterpolator
 import com.example.mistoryview.R
 import com.mistory.mistoryview.common.INITIAL_STORY_INDEX
 import com.mistory.mistoryview.common.extension.dpToPx
+import com.mistory.mistoryview.ui.activity.MiStoryDisplayActivity
 
 class MiStoryHorizontalProgressView : View {
+
+    private val TAG = javaClass.simpleName
     private var mProgressHeight = 0
     private var mGapBetweenProgressBars = 0
     private var mProgressBarPrimaryColor = 0
@@ -178,7 +182,7 @@ class MiStoryHorizontalProgressView : View {
      * full visible to user i.e in transition
      * of viewpager.
      */
-    fun pauseProgress() {
+    fun pause() {
         if (mProgressAnimators?.isRunning == true) {
             mProgressAnimators?.pause()
         }
@@ -187,7 +191,7 @@ class MiStoryHorizontalProgressView : View {
     /**
      * Resume progress when user release the touch of story view
      */
-    fun resumeProgress() {
+    fun resume() {
         if (mProgressAnimators?.isPaused == true) {
             mProgressAnimators?.resume()
         }
@@ -207,7 +211,7 @@ class MiStoryHorizontalProgressView : View {
     /**
      * Set progress bar count for particular sub story view.
      */
-    fun setMiStoryProgressBarCount(count: Int) {
+    private fun setMiStoryProgressBarCount(count: Int) {
         require(count >= 1) { "Count cannot be less than 1" }
         mProgressbarCount = count
         mProgressBarRightEdge = IntArray(mProgressbarCount)
@@ -218,29 +222,39 @@ class MiStoryHorizontalProgressView : View {
     /**
      * Set duration for sub story view
      */
-    fun setSingleStoryDisplayTime(time: Long) {
-        mSingleStoryDisplayTime = time
-        invalidate()
+    fun setSingleStoryDisplayTime(time: Long?) {
+        if (time != null && time > 0L) {
+            mSingleStoryDisplayTime = time
+            invalidate()
+        }
     }
 
-    fun setProgressBarPrimaryColor(colorPrimary: Int) {
+    private fun setProgressBarPrimaryColor(colorPrimary: Int) {
         mProgressBarPrimaryColor = colorPrimary
         invalidate()
     }
 
-    fun setProgressBarSecondaryColor(colorSecondary: Int) {
+    private fun setProgressBarSecondaryColor(colorSecondary: Int) {
         mProgressBarSecondaryColor = colorSecondary
         invalidate()
     }
 
-    fun setProgressBarHeight(progressBarHeight: Int) {
+    private fun setProgressBarHeight(progressBarHeight: Int) {
         this.mProgressHeight = progressBarHeight
         invalidate()
     }
 
-    fun setGapBetweenProgressBars(mGapBetweenProgressBars: Int) {
+    private fun setGapBetweenProgressBars(mGapBetweenProgressBars: Int) {
         this.mGapBetweenProgressBars = mGapBetweenProgressBars
         invalidate()
+    }
+
+    fun consumeAttrib(hashOfAttributeSet: HashMap<String, Any>, storyCount: Int) {
+        setGapBetweenProgressBars(hashOfAttributeSet[MiStoryDisplayActivity.MI_FULLSCREEN_GAP_BETWEEN_PROGRESSBAR] as Int)
+        setProgressBarHeight(hashOfAttributeSet[MiStoryDisplayActivity.MI_FULLSCREEN_PROGRESSBAR_HEIGHT] as Int)
+        setProgressBarPrimaryColor(hashOfAttributeSet[MiStoryDisplayActivity.MI_FULLSCREEN_PROGRESSBAR_PRIMARY_COLOR] as Int)
+        setProgressBarSecondaryColor(hashOfAttributeSet[MiStoryDisplayActivity.MI_FULLSCREEN_PROGRESSBAR_SECONDARY_COLOR] as Int)
+        setMiStoryProgressBarCount(storyCount)
     }
 
     private fun calculateWidthOfEachProgressBar() {
@@ -266,10 +280,15 @@ class MiStoryHorizontalProgressView : View {
 
         mProgressAnimators = ValueAnimator.ofInt(0, mSingleProgressBarWidth)
         (mProgressAnimators as ValueAnimator).apply {
-            interpolator = FastOutSlowInInterpolator()
+            interpolator = LinearInterpolator()
             duration = mSingleStoryDisplayTime
             addUpdateListener { valueAnimator ->
+                mMiStoryPlayerListener?.getCurrentTime(
+                    valueAnimator.currentPlayTime,
+                    valueAnimator.duration
+                )
                 val value = valueAnimator.animatedValue as Int
+
                 mProgressBarRightEdge[index] =
                     (index + 1) * mGapBetweenProgressBars + index * mSingleProgressBarWidth + value
                 invalidate()
@@ -279,7 +298,12 @@ class MiStoryHorizontalProgressView : View {
                 override fun onAnimationStart(animation: Animator?) {}
 
                 override fun onAnimationEnd(animation: Animator?) {
-                    if (!isCancelled) startAnimating(index + 1)
+                    mMiStoryPlayerListener?.onStoryFinished(index)
+
+                    if (!isCancelled)
+                        postDelayed({
+                            startAnimating(index + 1)
+                        }, 200)
                 }
 
                 override fun onAnimationCancel(animation: Animator?) {
@@ -315,6 +339,7 @@ class MiStoryHorizontalProgressView : View {
             if (mMiStoryPlayerListener != null) {
                 // Once user reaches at the last story point of particular story,
                 // exit from story detail view or move the next story.
+                Log.e("TAG", "**** 2 - Last index :: true ****")
                 mMiStoryPlayerListener?.onFinishedPlaying(isAtLastIndex = true)
                 return
             }
@@ -325,7 +350,7 @@ class MiStoryHorizontalProgressView : View {
                 mProgressAnimators?.end()
 
                 (mProgressAnimators as ValueAnimator).apply {
-                    interpolator = FastOutSlowInInterpolator()
+                    interpolator = LinearInterpolator()
                     addListener(object : Animator.AnimatorListener {
                         override fun onAnimationStart(animation: Animator?) {}
 
@@ -341,7 +366,9 @@ class MiStoryHorizontalProgressView : View {
                     })
 
                     if (!isRunning || !isStarted || isCancelled)
-                        startAnimating(currentIndex) // Move to next story
+                        postDelayed({
+                            startAnimating(currentIndex) // Move to next story
+                        }, 200)
                 }
             }
         }
@@ -356,6 +383,7 @@ class MiStoryHorizontalProgressView : View {
         if (currentIndex == 0) {
             // Move to previous story if exists,
             // If you are at the 1st index.
+            Log.e("TAG", "**** 3 - Last index :: false ****")
             mMiStoryPlayerListener?.onFinishedPlaying(isAtLastIndex = false)
         } else {
             // Move to previous story point until
@@ -372,7 +400,7 @@ class MiStoryHorizontalProgressView : View {
      */
     private fun resetProgressAnimation() {
         mProgressAnimators?.apply {
-            interpolator = FastOutSlowInInterpolator()
+            interpolator = LinearInterpolator()
             duration = mSingleStoryDisplayTime
             cancel() // Cancel current animation
             mProgressBarRightEdge[currentIndex] = 0 // Reset progress of current animation to 0
@@ -389,7 +417,7 @@ class MiStoryHorizontalProgressView : View {
     fun startOverProgress() {
         for (i in 0 until mProgressbarCount) {
             mProgressAnimators?.apply {
-                interpolator = FastOutSlowInInterpolator()
+                interpolator = LinearInterpolator()
                 duration = mSingleStoryDisplayTime
                 cancel() // Cancel current animation
                 mProgressBarRightEdge[i] = 0 // Reset progress of current animation to 0.
@@ -418,6 +446,8 @@ class MiStoryHorizontalProgressView : View {
      */
     interface MiStoryPlayerListener {
         fun onStartedPlaying(index: Int)
+        fun onStoryFinished(index: Int)
         fun onFinishedPlaying(isAtLastIndex: Boolean)
+        fun getCurrentTime(elapsedTime: Long, totalDuration: Long)
     }
 }

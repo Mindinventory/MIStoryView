@@ -3,6 +3,7 @@ package com.mistory.mistoryview.ui.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -79,7 +80,8 @@ class MiStoryDisplayActivity : FragmentActivity() {
      **/
     private fun setupViewPager() {
         pagerAdapterMi = MiStoryDisplayAdapter(
-            this, miStoryDisplayViewModel.listOfUserStory, ::invokeNextStory, ::invokePreviousStory
+            this,
+            miStoryDisplayViewModel.listOfUserStory, ::invokeNextStory, ::invokePreviousStory
         )
 
         mBinding.vpMiStoryViewPager.apply {
@@ -93,7 +95,6 @@ class MiStoryDisplayActivity : FragmentActivity() {
                 setCurrentItem(indexOfSelectedStory, false)
             }
             miStoryDisplayViewModel.setMainStoryIndex(currentItem)
-            pagerAdapterMi.setNextPreviousStoryData(currentItem)
         }
     }
 
@@ -138,17 +139,28 @@ class MiStoryDisplayActivity : FragmentActivity() {
      */
     private val onPageChangeCallback = object : MiPageChangeListener() {
         override fun onPageScrollCanceled() {
-            val fragment =
-                supportFragmentManager.findFragmentByTag("f" + fetchCurrentVPItem())
+            val fragment = getFragmentByTag()
             if (fragment is MiStoryDisplayFragment) {
                 fragment.resumeProgress()
             }
         }
 
         override fun onPageSelected(position: Int) {
+            setCurrentPageIndex(position)
             miStoryDisplayViewModel.setMainStoryIndex(position)
-            pagerAdapterMi.setNextPreviousStoryData(position)
         }
+
+        override fun onPageScrollStateChanged(state: Int) {
+            super.onPageScrollStateChanged(state)
+            val fragment = getFragmentByTag()
+            if (fragment is MiStoryDisplayFragment) {
+                fragment.pauseExoPlayer(state)
+            }
+        }
+    }
+
+    private fun getFragmentByTag(): Fragment? {
+        return supportFragmentManager.findFragmentByTag("f" + fetchCurrentVPItem())
     }
 
     private fun getPageTransformer(): ViewPager2.PageTransformer {

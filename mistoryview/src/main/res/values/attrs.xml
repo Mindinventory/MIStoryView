@@ -43,4 +43,8 @@
         <!--Set duration for single story view.-->
         <attr name="miSingleStoryDisplayTime" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="StoriesProgressView">
+        <attr name="progressCount" format="integer|reference" />
+    </declare-styleable>
 </resources>

@@ -5,15 +5,22 @@ import android.content.Intent
 import android.content.res.Resources
 import android.content.res.TypedArray
 import android.graphics.*
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mistoryview.R
+import com.google.android.exoplayer2.upstream.DataSpec
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import com.google.android.exoplayer2.upstream.cache.CacheDataSource
+import com.google.android.exoplayer2.upstream.cache.CacheWriter
+import com.mistory.mistoryview.common.CacheUtils
 import com.mistory.mistoryview.common.extension.ImageLoadingListener
 import com.mistory.mistoryview.common.extension.dpToPx
 import com.mistory.mistoryview.common.extension.loadThumbnailImage
@@ -31,6 +38,8 @@ import com.mistory.mistoryview.ui.activity.MiStoryDisplayActivity.Companion.MI_F
 import com.mistory.mistoryview.ui.activity.MiStoryDisplayActivity.Companion.MI_LIST_OF_STORY
 import com.mistory.mistoryview.ui.activity.MiStoryDisplayActivity.Companion.PAGE_TRANSFORMER
 import kotlinx.parcelize.Parcelize
+
+private const val PRECACHE_VIDEO_WORKER_NAME = "precache_video_worker"
 
 class MiStoryView : View {
     companion object {
@@ -76,6 +85,7 @@ class MiStoryView : View {
     private var miFullScreenSingleStoryDisplayTime: Long = 0
 
     constructor(context: Context) : super(context) {
+//        CacheUtils.initializeCache(context)
         initView(context)
         setDefaults()
     }
@@ -209,7 +219,10 @@ class MiStoryView : View {
             val intent = Intent(mAppCompatActivity, MiStoryDisplayActivity::class.java)
             intent.putParcelableArrayListExtra(MI_LIST_OF_STORY, miStoryUrls)
             intent.putExtra(INDEX_OF_SELECTED_STORY, indexOfSelectedStory)
-            intent.putExtra(HORIZONTAL_PROGRESS_ATTRIBUTES, retrieveHorizontalProgressViewAttributes())
+            intent.putExtra(
+                HORIZONTAL_PROGRESS_ATTRIBUTES,
+                retrieveHorizontalProgressViewAttributes()
+            )
             intent.putExtras(bundle)
             launcher?.launch(intent)
         }
@@ -275,12 +288,69 @@ class MiStoryView : View {
         calculateBendAngle(miIndicatorCount)
         invalidate()
         loadLastImageBitmap()
+
+        // precache videos if there are any
+//        preloadVideos()
+    }
+
+    private fun preloadVideos() {
+        miStoryImageUrls?.map { data ->
+            Thread().run {
+                val dataUri = Uri.parse(data.mediaUrl)
+                val dataSpec = DataSpec(dataUri)
+
+                val mHttpDataSourceFactory = DefaultHttpDataSource.Factory()
+                    .setAllowCrossProtocolRedirects(true)
+
+                val mCacheDataSource = CacheDataSource.Factory()
+                    .setCache(CacheUtils.getSimpleCache())
+                    .setUpstreamDataSourceFactory(mHttpDataSourceFactory)
+                    .createDataSource()
+
+                val listener =
+                    CacheWriter.ProgressListener { requestLength: Long, bytesCached: Long, _: Long ->
+                        val downloadPercentage = (bytesCached * 100.0 / requestLength)
+                        Log.e(javaClass.simpleName, "downloadPercentage: $downloadPercentage")
+                    }
+
+                try {
+                    CacheWriter(
+                        mCacheDataSource,
+                        dataSpec,
+                        null,
+                        listener,
+                    ).cache()
+
+                    /*CacheUtil.cache(
+                        dataSpec,
+                        StoryApp.simpleCache,
+                        CacheUtil.DEFAULT_CACHE_KEY_FACTORY,
+                        dataSource,
+                        listener,
+                        null
+                    )*/
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+
+
+        /*miStoryImageUrls?.map {
+            if (it.mediaType == MiMediaType.VIDEO) {
+                val workManager = WorkManager.getInstance(context.applicationContext)
+                val videoPreloadWorker = VideoPreloadWorker.buildWorkRequest(it.mediaUrl)
+                workManager.enqueueUniqueWork(
+                    PRECACHE_VIDEO_WORKER_NAME, ExistingWorkPolicy.KEEP, videoPreloadWorker
+                )
+            }
+        }*/
     }
 
     private fun loadLastImageBitmap() {
         loadThumbnailImage(
             context,
-            miStoryImageUrls?.first()?.imageUrl,
+            miStoryImageUrls?.first()?.mediaUrl,
             object : ImageLoadingListener {
                 override fun onResourceReady(bitmap: Bitmap) {
                     miIndicatorImageBitmap = bitmap

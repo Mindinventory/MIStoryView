@@ -45,6 +45,7 @@ class MiStoryHorizontalProgressView : View {
     private var isCancelled = false
 
     private var currentIndex: Int = 0
+    private var isPreviousStory = false
 
     companion object {
         const val MI_PROGRESS_BAR_HEIGHT = 2
@@ -267,7 +268,8 @@ class MiStoryHorizontalProgressView : View {
      * starting index. Also move to next story
      * point automatically when animations ends.
      */
-    fun startAnimating(index: Int) {
+    fun startAnimating(index: Int, from: String = "Hello") {
+        Log.e("TAG", "**** $from---$index ****")
         // Hold the current index of story point.
         currentIndex = index
 
@@ -276,6 +278,11 @@ class MiStoryHorizontalProgressView : View {
                 mMiStoryPlayerListener?.onFinishedPlaying(isAtLastIndex = true)
                 return
             }
+        }
+
+        if (mProgressAnimators != null && mProgressAnimators?.isRunning == true) {
+            mProgressAnimators?.pause()
+            mProgressAnimators = null
         }
 
         mProgressAnimators = ValueAnimator.ofInt(0, mSingleProgressBarWidth)
@@ -298,11 +305,12 @@ class MiStoryHorizontalProgressView : View {
                 override fun onAnimationStart(animation: Animator?) {}
 
                 override fun onAnimationEnd(animation: Animator?) {
-                    mMiStoryPlayerListener?.onStoryFinished(index)
+                    if (isPreviousStory.not())
+                        mMiStoryPlayerListener?.onStoryFinished(index)
 
                     if (!isCancelled)
                         postDelayed({
-                            startAnimating(index + 1)
+                            startAnimating(index + 1, "One")
                         }, 200)
                 }
 
@@ -367,7 +375,7 @@ class MiStoryHorizontalProgressView : View {
 
                     if (!isRunning || !isStarted || isCancelled)
                         postDelayed({
-                            startAnimating(currentIndex) // Move to next story
+                            startAnimating(currentIndex, "Two") // Move to next story
                         }, 200)
                 }
             }
@@ -379,8 +387,9 @@ class MiStoryHorizontalProgressView : View {
      */
     fun moveToPreviousStoryPoint(moveToIndex: Int) {
         currentIndex = moveToIndex
+        isPreviousStory = true
 
-        if (currentIndex == 0) {
+        if (currentIndex == INITIAL_STORY_INDEX) {
             // Move to previous story if exists,
             // If you are at the 1st index.
             Log.e("TAG", "**** 3 - Last index :: false ****")
@@ -437,6 +446,7 @@ class MiStoryHorizontalProgressView : View {
             for (index in 0..upToIndex) {
                 mProgressBarRightEdge[index] =
                     (index + 1) * mGapBetweenProgressBars + index * mSingleProgressBarWidth + mSingleProgressBarWidth
+                invalidate()
             }
         }
     }
@@ -446,8 +456,8 @@ class MiStoryHorizontalProgressView : View {
      */
     interface MiStoryPlayerListener {
         fun onStartedPlaying(index: Int)
-        fun onStoryFinished(index: Int)
+        fun onStoryFinished(index: Int) {}
         fun onFinishedPlaying(isAtLastIndex: Boolean)
-        fun getCurrentTime(elapsedTime: Long, totalDuration: Long)
+        fun getCurrentTime(elapsedTime: Long, totalDuration: Long) {}
     }
 }

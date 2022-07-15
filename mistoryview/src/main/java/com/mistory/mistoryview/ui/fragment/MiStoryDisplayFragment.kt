@@ -31,8 +31,8 @@ class MiStoryDisplayFragment(
     private val invokePreviousStory: ((Int) -> Unit)? = null
 ) : Fragment(), MiStoryHorizontalProgressView.MiStoryPlayerListener, GestureListener {
 
-    private val TAG = javaClass.simpleName
     private lateinit var miGestureDetector: GestureDetector
+    private val TAG = javaClass.simpleName
     private lateinit var mBinding: FragmentMiStoryDisplayBinding
     private var isLongPressEventOccurred = false
 
@@ -45,6 +45,7 @@ class MiStoryDisplayFragment(
     }
     private var mStories = arrayListOf<MiStoryModel>()
     private var isResourceReady = false
+
     private var exoPlayer: ExoPlayer? = null
     private var storyDuration = 0L
     private var isCurrentStoryFinished = true
@@ -56,6 +57,10 @@ class MiStoryDisplayFragment(
         override fun onIsLoadingChanged(isLoading: Boolean) {
             super.onIsLoadingChanged(isLoading)
             Log.e("TAG", "**** isLoading :: $isLoading ****")
+            if (isLoading)
+                mBinding.dpvProgress.pause()
+            else
+                mBinding.dpvProgress.resume()
         }
 
         override fun onPlaybackStateChanged(playbackState: Int) {
@@ -67,6 +72,7 @@ class MiStoryDisplayFragment(
                 }
 
                 Player.STATE_READY -> {
+                    isResourceReady = true
                     Log.e("TAG", "**** Duration :: ${exoPlayer?.duration} ****")
                     resumePlayer()
                     if (!isCurrentStoryFinished) {
@@ -76,9 +82,11 @@ class MiStoryDisplayFragment(
                         Log.e("TAG", "**** Story start over ****")
                         isCurrentStoryFinished = false
                         if (isResumed && isVisible) {
+                            miStoryDisplayViewModel.updateStoryPoint(lastStoryPointIndex)
+
                             mBinding.dpvProgress.apply {
                                 setSingleStoryDisplayTime(exoPlayer?.duration)
-                                startAnimating(lastStoryPointIndex)
+                                startAnimating(lastStoryPointIndex, "Three")
                             }
                         }
                     }
@@ -139,7 +147,7 @@ class MiStoryDisplayFragment(
     }
 
     /**
-     * Method to check visibility of current
+     * Method to check visibility of
      * fragment and based on that value decide
      * to start progress or pause progress
      * while viewpager transition.
@@ -167,11 +175,14 @@ class MiStoryDisplayFragment(
                 prefillProgressView(lastStoryPointIndex - 1)
                 if (mStories[lastStoryPointIndex].isMediaTypeVideo.not()) {
                     mBinding.dpvProgress.setSingleStoryDisplayTime(storyDuration)
-                    startAnimating(lastStoryPointIndex) // Initial entry point for progress animation.
+                    // Initial entry point for progress animation.
+                    startAnimating(lastStoryPointIndex, "Four")
                 }
             }
+
+            showWithFade(mBinding.dpvProgress, mBinding.tvName, mBinding.tvTime)
         } else {
-            pausePlayer()
+            mBinding.dpvProgress.pause()
         }
     }
 
@@ -217,17 +228,18 @@ class MiStoryDisplayFragment(
      */
     private fun loadInitialData() {
         require(mStories.isNotEmpty()) { "Provide list of URLs." }
-        managePlayerVisibility(mStories[INITIAL_STORY_INDEX])
-        mStories[INITIAL_STORY_INDEX].let {
-            mBinding.tvName.text = it.name
-            mBinding.tvTime.text = it.time
+        if (isResumed && isVisible) {
+            mStories[INITIAL_STORY_INDEX].let {
+                mBinding.tvName.text = it.name
+                mBinding.tvTime.text = it.time
+            }
         }
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setTouchListener() {
         with(mBinding) {
-            ivMiStoryImage.setOnTouchListener { _, event ->
+            controlView.setOnTouchListener { _, event ->
                 // Pass current MotionEvent to gesture listener
                 miGestureDetector.onTouchEvent(event)
 
@@ -265,30 +277,52 @@ class MiStoryDisplayFragment(
      */
     override fun onStartedPlaying(index: Int) {
         require(mStories.isNotEmpty()) { "Provide list of URLs." }
-        lastStoryPointIndex = index
-        managePlayerVisibility(mStories[index])
-        mStories[index].let {
-            mBinding.tvName.text = it.name
-            mBinding.tvTime.text = it.time
+        if (isResumed && isVisible) {
+            lastStoryPointIndex = index
+            managePlayerVisibility(mStories[index])
+
+            mStories[index].let {
+                mBinding.tvName.text = it.name
+                mBinding.tvTime.text = it.time
+            }
         }
     }
 
     override fun onStoryFinished(index: Int) {
         Log.e("TAG", "**** onStoryFinished invoked index :: $index****")
+        pausePlayer()
         if (isResumed && isVisible) {
             isCurrentStoryFinished = true
-
-            val miStoryModel = if (index == mStories.count() - 1) {
-                mStories[index]
+            /*if (index < mStories.count() - 1) {
+                Log.e("TAG", "**** Prepare next media ****")
+                val miStoryModel = getCurrentMediaIndex(index)
+                if (miStoryModel.isMediaTypeVideo) {
+                    Log.e("TAG", "**** URL :: ${miStoryModel.mediaUrl} ****")
+                    prepareMedia(miStoryModel)
+                }
+            }*/
+            /*if (index == mStories.count() - 1) {
+                Log.e("TAG", "**** Invoke next story ****")
+                invokeNextStory?.invoke(lastStoryPointIndex)
             } else {
-                mStories[index + 1]
-            }
-
-            if (miStoryModel.isMediaTypeVideo) {
-                Log.e("TAG", "**** URL :: ${miStoryModel.mediaUrl} ****")
-                prepareMedia(miStoryModel)
-            }
+                Log.e("TAG", "**** Prepare next media ****")
+                val miStoryModel = getCurrentMediaIndex(index)
+                if (miStoryModel.isMediaTypeVideo) {
+                    Log.e("TAG", "**** URL :: ${miStoryModel.mediaUrl} ****")
+                    prepareMedia(miStoryModel)
+                }
+            }*/
         }
+    }
+
+    private fun getCurrentMediaIndex(index: Int): MiStoryModel {
+        lastStoryPointIndex = if (index == mStories.count() - 1) {
+            index
+        } else {
+            index + 1
+        }
+
+        return mStories[lastStoryPointIndex]
     }
 
     override fun getCurrentTime(elapsedTime: Long, totalDuration: Long) {
@@ -310,7 +344,6 @@ class MiStoryDisplayFragment(
      * Callback to MiStoryDisplayActivity
      */
     override fun onFinishedPlaying(isAtLastIndex: Boolean) {
-        Log.e("TAG", "All stories seen...")
         if (isAtLastIndex)
             invokeNextStory?.invoke(lastStoryPointIndex)
         else
@@ -336,6 +369,7 @@ class MiStoryDisplayFragment(
                         startPostponedEnterTransition()
                         showWithFade(mBinding.dpvProgress, mBinding.tvName, mBinding.tvTime)
                         mBinding.dpvProgress.resume()
+//                        mBinding.dpvProgress.startAnimating(index)
                         if (isVisible && isResumed)
                             miStoryDisplayViewModel.updateStoryPoint(index)
                         unblockInput()
@@ -361,15 +395,19 @@ class MiStoryDisplayFragment(
      * the X value of touch event.
      */
     override fun onSingleTapOccurred(e: MotionEvent?) {
+        isCurrentStoryFinished = true
+        mBinding.dpvProgress.pause()
+        exoPlayer?.stop()
+
         e?.x?.let { x ->
-            if (x < (mBinding.ivMiStoryImage.width.toFloat() / 3)) {
+            if (x < (mBinding.controlView.width.toFloat() / 3)) {
                 // Invoke previous story point/whole story
                 mBinding.dpvProgress.moveToPreviousStoryPoint(lastStoryPointIndex)
                 mBinding.dpvProgress.startAnimating(
                     if (lastStoryPointIndex > INITIAL_STORY_INDEX)
                         lastStoryPointIndex - 1
                     else
-                        INITIAL_STORY_INDEX
+                        INITIAL_STORY_INDEX, "Five"
                 )
             } else {
                 // Invoke next story point/whole story
@@ -409,11 +447,11 @@ class MiStoryDisplayFragment(
     }
 
     private fun blockInput() {
-        mBinding.ivMiStoryImage.isEnabled = false
+        mBinding.controlView.isEnabled = false
     }
 
     private fun unblockInput() {
-        mBinding.ivMiStoryImage.isEnabled = true
+        mBinding.controlView.isEnabled = true
     }
 
     private fun showErrorAlert() {
@@ -443,21 +481,24 @@ class MiStoryDisplayFragment(
 
     private fun managePlayerVisibility(miStoryModel: MiStoryModel) {
         if (miStoryModel.isMediaTypeVideo) {
+            prepareMedia(miStoryModel)
+            mBinding.ivMiStoryImage.hide()
             mBinding.videoPlayerContainer.show()
         } else {
             if (exoPlayer != null && exoPlayer?.isPlaying == true) {
                 exoPlayer?.playWhenReady = false
             }
+            mBinding.ivMiStoryImage.show()
+            mBinding.videoPlayerContainer.hide()
             mBinding.dpvProgress.setSingleStoryDisplayTime(storyDuration)
             loadImage(lastStoryPointIndex)
-            mBinding.videoPlayerContainer.hide()
         }
     }
 
     private fun prepareMedia(miStoryModel: MiStoryModel) {
         val videoUri = Uri.parse(miStoryModel.mediaUrl)
         val mediaItem = MediaItem.fromUri(videoUri)
-        exoPlayer?.addMediaItem(mediaItem)
+        exoPlayer?.setMediaItem(mediaItem)
         exoPlayer?.prepare()
     }
 
@@ -484,8 +525,8 @@ class MiStoryDisplayFragment(
 
     override fun onPause() {
         isResourceReady = false
-        super.onPause()
         didVisibilityChange()
+        super.onPause()
     }
 
     override fun onStop() {

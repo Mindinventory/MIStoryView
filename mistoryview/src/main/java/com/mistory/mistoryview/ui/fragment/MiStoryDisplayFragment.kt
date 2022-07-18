@@ -210,7 +210,7 @@ class MiStoryDisplayFragment(
     }
 
     private fun initStoryDisplayProgressView() {
-        if (!mStories.isNullOrEmpty()) {
+        if (mStories.isNotEmpty()) {
             with(mBinding.dpvProgress) {
                 consumeAttrib(
                     miStoryDisplayViewModel.getHorizontalProgressViewAttributes(),
@@ -289,40 +289,9 @@ class MiStoryDisplayFragment(
     }
 
     override fun onStoryFinished(index: Int) {
-        Log.e("TAG", "**** onStoryFinished invoked index :: $index****")
+        Log.e("TAG", "**** onStoryFinished invoked index :: $index ****")
         pausePlayer()
-        if (isResumed && isVisible) {
-            isCurrentStoryFinished = true
-            /*if (index < mStories.count() - 1) {
-                Log.e("TAG", "**** Prepare next media ****")
-                val miStoryModel = getCurrentMediaIndex(index)
-                if (miStoryModel.isMediaTypeVideo) {
-                    Log.e("TAG", "**** URL :: ${miStoryModel.mediaUrl} ****")
-                    prepareMedia(miStoryModel)
-                }
-            }*/
-            /*if (index == mStories.count() - 1) {
-                Log.e("TAG", "**** Invoke next story ****")
-                invokeNextStory?.invoke(lastStoryPointIndex)
-            } else {
-                Log.e("TAG", "**** Prepare next media ****")
-                val miStoryModel = getCurrentMediaIndex(index)
-                if (miStoryModel.isMediaTypeVideo) {
-                    Log.e("TAG", "**** URL :: ${miStoryModel.mediaUrl} ****")
-                    prepareMedia(miStoryModel)
-                }
-            }*/
-        }
-    }
-
-    private fun getCurrentMediaIndex(index: Int): MiStoryModel {
-        lastStoryPointIndex = if (index == mStories.count() - 1) {
-            index
-        } else {
-            index + 1
-        }
-
-        return mStories[lastStoryPointIndex]
+        isCurrentStoryFinished = true
     }
 
     override fun getCurrentTime(elapsedTime: Long, totalDuration: Long) {
@@ -344,6 +313,7 @@ class MiStoryDisplayFragment(
      * Callback to MiStoryDisplayActivity
      */
     override fun onFinishedPlaying(isAtLastIndex: Boolean) {
+        Log.e("TAG", "**** onFinishedPlaying :: $lastStoryPointIndex ****")
         if (isAtLastIndex)
             invokeNextStory?.invoke(lastStoryPointIndex)
         else
@@ -403,12 +373,10 @@ class MiStoryDisplayFragment(
             if (x < (mBinding.controlView.width.toFloat() / 3)) {
                 // Invoke previous story point/whole story
                 mBinding.dpvProgress.moveToPreviousStoryPoint(lastStoryPointIndex)
-                mBinding.dpvProgress.startAnimating(
-                    if (lastStoryPointIndex > INITIAL_STORY_INDEX)
-                        lastStoryPointIndex - 1
-                    else
-                        INITIAL_STORY_INDEX, "Five"
-                )
+
+                if (lastStoryPointIndex > INITIAL_STORY_INDEX && lastStoryPointIndex < mStories.count()) {
+                    mBinding.dpvProgress.startAnimating(lastStoryPointIndex - 1)
+                }
             } else {
                 // Invoke next story point/whole story
                 mBinding.dpvProgress.moveToNextStoryPoint()

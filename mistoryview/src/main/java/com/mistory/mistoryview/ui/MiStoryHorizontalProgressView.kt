@@ -342,8 +342,9 @@ class MiStoryHorizontalProgressView : View {
         // Make this variable false again
         // to proceed further
         isCancelled = false
+        Log.e("TAG", "**** index :: $currentIndex -- count :: $mProgressbarCount ****")
 
-        if (currentIndex == mProgressbarCount) {
+        if (currentIndex == mProgressbarCount - 1) {
             if (mMiStoryPlayerListener != null) {
                 // Once user reaches at the last story point of particular story,
                 // exit from story detail view or move the next story.

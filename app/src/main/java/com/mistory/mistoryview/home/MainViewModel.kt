@@ -26,6 +26,14 @@ class MainViewModel : ViewModel() {
                     mediaType = MiMediaType.VIDEO
                 )
             )
+            it.userStoryList.add(
+                MiStoryModel(
+                    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+                    "Johny Curtis",
+                    "08:15 AM",
+                    mediaType = MiMediaType.VIDEO
+                )
+            )
         })
         mListOfUsers.add(MiUserStoryModel("2", "Adam White", ArrayList()).also {
             it.userStoryList.add(

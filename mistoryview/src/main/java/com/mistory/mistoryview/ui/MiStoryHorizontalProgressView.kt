@@ -224,6 +224,7 @@ class MiStoryHorizontalProgressView : View {
      * Set duration for sub story view
      */
     fun setSingleStoryDisplayTime(time: Long?) {
+        Log.e("TAG--", "**** setSingleStoryDisplayTime invoked ****")
         if (time != null && time > 0L) {
             mSingleStoryDisplayTime = time
             invalidate()

@@ -292,6 +292,14 @@ class MiStoryDisplayFragment(
         Log.e("TAG", "**** onStoryFinished invoked index :: $index ****")
         pausePlayer()
         isCurrentStoryFinished = true
+
+        // Set story duration for next story instance priorly
+        // because once next progress will start automatically,
+        // it will consider duration of previous story item but not the next one.
+        if (index + 1 < mStories.count()) {
+            if (mStories[index + 1].isMediaTypeVideo.not())
+                mBinding.dpvProgress.setSingleStoryDisplayTime(storyDuration)
+        }
     }
 
     override fun getCurrentTime(elapsedTime: Long, totalDuration: Long) {
@@ -339,7 +347,6 @@ class MiStoryDisplayFragment(
                         startPostponedEnterTransition()
                         showWithFade(mBinding.dpvProgress, mBinding.tvName, mBinding.tvTime)
                         mBinding.dpvProgress.resume()
-//                        mBinding.dpvProgress.startAnimating(index)
                         if (isVisible && isResumed)
                             miStoryDisplayViewModel.updateStoryPoint(index)
                         unblockInput()
@@ -458,7 +465,6 @@ class MiStoryDisplayFragment(
             }
             mBinding.ivMiStoryImage.show()
             mBinding.videoPlayerContainer.hide()
-            mBinding.dpvProgress.setSingleStoryDisplayTime(storyDuration)
             loadImage(lastStoryPointIndex)
         }
     }

@@ -303,7 +303,10 @@ class MiStoryHorizontalProgressView : View {
             }
 
             addListener(object : Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator?) {}
+                override fun onAnimationStart(animation: Animator?) {
+                    isPreviousStory =
+                        false // Make this variable false again here to invoke onFinished callback in fragment.
+                }
 
                 override fun onAnimationEnd(animation: Animator?) {
                     if (isPreviousStory.not())
@@ -358,6 +361,7 @@ class MiStoryHorizontalProgressView : View {
             // then start next animation.
             if (mProgressAnimators != null) {
                 mProgressAnimators?.end()
+                mMiStoryPlayerListener?.onStoryFinished(currentIndex) // Invoke onStoryFinished as soon as animation ends.
 
                 (mProgressAnimators as ValueAnimator).apply {
                     interpolator = LinearInterpolator()

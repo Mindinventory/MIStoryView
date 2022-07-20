@@ -140,10 +140,17 @@ class MiStoryDisplayFragment(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        registerLiveDataObserver()
         miGestureDetector =
             GestureDetector(requireContext(), MiGestureDetector(this@MiStoryDisplayFragment))
         initStoryDisplayProgressView()
         setTouchListener()
+    }
+
+    private fun registerLiveDataObserver() {
+        miStoryDisplayViewModel.startOverStoryLiveData.observe(viewLifecycleOwner) {
+            isCurrentStoryFinished = true
+        }
     }
 
     /**

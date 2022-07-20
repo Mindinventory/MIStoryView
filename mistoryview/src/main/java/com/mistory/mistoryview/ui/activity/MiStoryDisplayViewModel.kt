@@ -1,5 +1,7 @@
 package com.mistory.mistoryview.ui.activity
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mistory.mistoryview.common.INITIAL_STORY_INDEX
 import com.mistory.mistoryview.data.entity.MiUserStoryModel
@@ -9,6 +11,9 @@ class MiStoryDisplayViewModel : ViewModel() {
     var listOfUserStory = ArrayList<MiUserStoryModel>()
     private var mainStoryIndex: Int = INITIAL_STORY_INDEX
     private var horizontalProgressViewAttributes = hashMapOf<String, Any>()
+
+    private var _startOverStoryLiveData = MutableLiveData<Boolean>()
+    val startOverStoryLiveData: LiveData<Boolean> = _startOverStoryLiveData
 
     fun addListOfUserStories(listOfUserStories: ArrayList<MiUserStoryModel>?) {
         listOfUserStory.clear()
@@ -26,6 +31,7 @@ class MiStoryDisplayViewModel : ViewModel() {
 
     fun setMainStoryIndex(mainStoryIndex: Int) {
         this.mainStoryIndex = mainStoryIndex
+        startOverStory()
     }
 
     fun setHorizontalProgressViewAttributes(horizontalProgressViewAttributes: HashMap<String, Any>) {
@@ -33,6 +39,10 @@ class MiStoryDisplayViewModel : ViewModel() {
     }
 
     fun getHorizontalProgressViewAttributes() = horizontalProgressViewAttributes
+
+    private fun startOverStory() {
+        _startOverStoryLiveData.postValue(true)
+    }
 
     override fun onCleared() {
         super.onCleared()

@@ -49,7 +49,7 @@ fun AppCompatImageView.loadImage(imageUrl: String?, imageLoadingListener: ImageL
                     isFirstResource: Boolean
                 ): Boolean {
                     if (resource != null) {
-                        imageLoadingListener.onResourceReady(resource.toBitmap())
+                        imageLoadingListener.onResourceReady(resource.toBitmap(), resource)
                     }
                     return false
                 }
@@ -71,7 +71,7 @@ fun loadThumbnailImage(
         .load(getThumbnail(imageUrl))
         .into(object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                imageLoadingListener.onResourceReady(resource)
+                imageLoadingListener.onResourceReady(resource, null)
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {
@@ -122,6 +122,6 @@ private fun provideRequestOptions(context: Context): RequestOptions {
 
 interface ImageLoadingListener {
     fun onLoadFailed() {}
-    fun onResourceReady(bitmap: Bitmap)
+    fun onResourceReady(bitmap: Bitmap, drawable: Drawable?)
     fun onLoadCleared() {}
 }

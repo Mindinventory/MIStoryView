@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.Resources
 import android.content.res.TypedArray
 import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
@@ -352,7 +353,7 @@ class MiStoryView : View {
             context,
             miStoryImageUrls?.first()?.mediaUrl,
             object : ImageLoadingListener {
-                override fun onResourceReady(bitmap: Bitmap) {
+                override fun onResourceReady(bitmap: Bitmap, drawable: Drawable?) {
                     miIndicatorImageBitmap = bitmap
                     invalidate()
                 }

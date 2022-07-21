@@ -2,6 +2,7 @@ package com.mistory.mistoryview.ui.fragment
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING
+import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.example.mistoryview.R
 import com.example.mistoryview.databinding.FragmentMiStoryDisplayBinding
 import com.google.android.exoplayer2.ExoPlayer
@@ -49,6 +51,7 @@ class MiStoryDisplayFragment(
     private var exoPlayer: ExoPlayer? = null
     private var storyDuration = 0L
     private var isCurrentStoryFinished = true
+    private var animatedDrawable: GifDrawable? = null
 
     /**
      * Exoplayer listener
@@ -59,8 +62,6 @@ class MiStoryDisplayFragment(
             Log.e("TAG", "**** isLoading :: $isLoading ****")
             if (isLoading)
                 mBinding.dpvProgress.pause()
-            else
-                mBinding.dpvProgress.resume()
         }
 
         override fun onPlaybackStateChanged(playbackState: Int) {
@@ -72,6 +73,7 @@ class MiStoryDisplayFragment(
                 }
 
                 Player.STATE_READY -> {
+                    unblockInput()
                     isResourceReady = true
                     Log.e("TAG", "**** Duration :: ${exoPlayer?.duration} ****")
                     resumePlayer()
@@ -269,6 +271,8 @@ class MiStoryDisplayFragment(
                         mBinding.dpvProgress.resume()
                         if (mStories[lastStoryPointIndex].isMediaTypeVideo)
                             resumePlayer()
+                        else
+                            resumeGIFAnimation()
                     }
                 }
                 true
@@ -338,7 +342,6 @@ class MiStoryDisplayFragment(
     private fun loadImage(index: Int) {
         mBinding.dpvProgress.pause()
 
-        blockInput()
         mStories.let { stories ->
             mBinding.ivMiStoryImage.loadImage(
                 stories[index].mediaUrl, object : ImageLoadingListener {
@@ -349,8 +352,12 @@ class MiStoryDisplayFragment(
                         unblockInput()
                     }
 
-                    override fun onResourceReady(bitmap: Bitmap) {
+                    override fun onResourceReady(bitmap: Bitmap, drawable: Drawable?) {
                         isResourceReady = true
+                        if (drawable is GifDrawable) {
+                            animatedDrawable = drawable
+                        }
+
                         startPostponedEnterTransition()
                         showWithFade(mBinding.dpvProgress, mBinding.tvName, mBinding.tvTime)
                         mBinding.dpvProgress.resume()
@@ -382,6 +389,7 @@ class MiStoryDisplayFragment(
         isCurrentStoryFinished = true
         mBinding.dpvProgress.pause()
         exoPlayer?.stop()
+        blockInput()
 
         e?.x?.let { x ->
             if (x < (mBinding.controlView.width.toFloat() / 3)) {
@@ -389,6 +397,9 @@ class MiStoryDisplayFragment(
                 mBinding.dpvProgress.moveToPreviousStoryPoint(lastStoryPointIndex)
 
                 if (lastStoryPointIndex > INITIAL_STORY_INDEX && lastStoryPointIndex < mStories.count()) {
+                    if (mStories[lastStoryPointIndex - 1].isMediaTypeVideo.not()) {
+                        mBinding.dpvProgress.setSingleStoryDisplayTime(storyDuration)
+                    }
                     mBinding.dpvProgress.startAnimating(lastStoryPointIndex - 1)
                 }
             } else {
@@ -409,6 +420,8 @@ class MiStoryDisplayFragment(
                 mBinding.dpvProgress.resume()
                 if (mStories[lastStoryPointIndex].isMediaTypeVideo) {
                     resumePlayer()
+                } else {
+                    resumeGIFAnimation()
                 }
             }
         }
@@ -490,8 +503,21 @@ class MiStoryDisplayFragment(
     }
 
     private fun pausePlayer() {
+        if (!mStories[lastStoryPointIndex].isMediaTypeVideo) {
+            if (isResourceReady && animatedDrawable is GifDrawable) {
+                animatedDrawable?.stop()
+            }
+        }
         mBinding.dpvProgress.pause()
         exoPlayer?.playWhenReady = false
+    }
+
+    private fun resumeGIFAnimation() {
+        if (!mStories[lastStoryPointIndex].isMediaTypeVideo) {
+            if (isResourceReady && animatedDrawable != null) {
+                animatedDrawable?.start()
+            }
+        }
     }
 
     private fun resumePlayer() {

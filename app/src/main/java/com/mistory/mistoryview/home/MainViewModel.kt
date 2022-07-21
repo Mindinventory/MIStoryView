@@ -12,10 +12,16 @@ class MainViewModel : ViewModel() {
         mListOfUsers.add(MiUserStoryModel("1", "Johny Curtis", ArrayList()).also {
             it.userStoryList.add(
                 MiStoryModel(
-                    "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+                    "https://media.giphy.com/media/L1fMIqeN3LJmnRYUxh/giphy.gif",
                     "Johny Curtis",
-                    "07:10 AM",
-                    mediaType = MiMediaType.VIDEO
+                    "07:10 AM"
+                )
+            )
+            it.userStoryList.add(
+                MiStoryModel(
+                    "https://i.picsum.photos/id/1008/5616/3744.jpg?hmac=906z84ml4jhqPMsm4ObF9aZhCRC-t2S_Sy0RLvYWZwY",
+                    "Johny Curtis",
+                    "07:10 AM"
                 )
             )
             it.userStoryList.add(

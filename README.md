@@ -44,7 +44,7 @@ If Android studio version is Arctic Fox or upper then add it in your settings.gr
 ```bash
 dependencies {
 		    ...
-	        implementation 'com.github.Mindinventory:MIStoryView:0.0.1'
+	        implementation 'com.github.Mindinventory:MIStoryView:x.x.x'
 	}
 ```
 

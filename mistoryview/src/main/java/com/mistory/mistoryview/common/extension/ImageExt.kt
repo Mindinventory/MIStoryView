@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.util.Log
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -20,9 +19,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.target.Target
 import com.bumptech.glide.request.transition.Transition
-
-private const val YOUTUBE_URL = "https://www.youtube.com/"
-private const val YOUTUBE_THUMBNAIL_IMAGE = "http://img.youtube.com/vi/%s/sddefault.jpg"
 
 fun AppCompatImageView.loadImage(imageUrl: String?, imageLoadingListener: ImageLoadingListener) {
     try {
@@ -68,7 +64,8 @@ fun loadThumbnailImage(
     Glide.with(context)
         .asBitmap()
         .apply(provideFixedSizeRequestOptions(context))
-        .load(getThumbnail(imageUrl))
+        .sizeMultiplier(0.5f)
+        .load(imageUrl)
         .into(object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 imageLoadingListener.onResourceReady(resource, null)
@@ -78,20 +75,6 @@ fun loadThumbnailImage(
                 imageLoadingListener.onLoadCleared()
             }
         })
-}
-
-private fun getThumbnail(videoUrl: String?): String {
-    var thumbnailUrl = ""
-
-    videoUrl?.let { url->
-        thumbnailUrl = if (url.contains(YOUTUBE_URL)) {
-            val videoID = url.split(Regex("v="))[1]
-            String.format(YOUTUBE_THUMBNAIL_IMAGE, videoID)
-        } else {
-            url
-        }
-    }
-    return thumbnailUrl
 }
 
 private fun createPlaceholder(context: Context) = CircularProgressDrawable(context).apply {

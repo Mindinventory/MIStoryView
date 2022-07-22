@@ -9,7 +9,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.animation.LinearInterpolator
 import com.example.mistoryview.R
@@ -19,7 +18,6 @@ import com.mistory.mistoryview.ui.activity.MiStoryDisplayActivity
 
 class MiStoryHorizontalProgressView : View {
 
-    private val TAG = javaClass.simpleName
     private var mProgressHeight = 0
     private var mGapBetweenProgressBars = 0
     private var mProgressBarPrimaryColor = 0
@@ -224,7 +222,6 @@ class MiStoryHorizontalProgressView : View {
      * Set duration for sub story view
      */
     fun setSingleStoryDisplayTime(time: Long?) {
-        Log.e("TAG--", "**** setSingleStoryDisplayTime invoked ****")
         if (time != null && time > 0L) {
             mSingleStoryDisplayTime = time
             invalidate()
@@ -269,8 +266,7 @@ class MiStoryHorizontalProgressView : View {
      * starting index. Also move to next story
      * point automatically when animations ends.
      */
-    fun startAnimating(index: Int, from: String = "Hello") {
-        Log.e("TAG", "**** $from---$index ****")
+    fun startAnimating(index: Int) {
         // Hold the current index of story point.
         currentIndex = index
 
@@ -291,10 +287,6 @@ class MiStoryHorizontalProgressView : View {
             interpolator = LinearInterpolator()
             duration = mSingleStoryDisplayTime
             addUpdateListener { valueAnimator ->
-                mMiStoryPlayerListener?.getCurrentTime(
-                    valueAnimator.currentPlayTime,
-                    valueAnimator.duration
-                )
                 val value = valueAnimator.animatedValue as Int
 
                 mProgressBarRightEdge[index] =
@@ -314,7 +306,7 @@ class MiStoryHorizontalProgressView : View {
 
                     if (!isCancelled)
                         postDelayed({
-                            startAnimating(index + 1, "One")
+                            startAnimating(index + 1)
                         }, 200)
                 }
 
@@ -346,13 +338,11 @@ class MiStoryHorizontalProgressView : View {
         // Make this variable false again
         // to proceed further
         isCancelled = false
-        Log.e("TAG", "**** index :: $currentIndex -- count :: $mProgressbarCount ****")
 
         if (currentIndex == mProgressbarCount - 1) {
             if (mMiStoryPlayerListener != null) {
                 // Once user reaches at the last story point of particular story,
                 // exit from story detail view or move the next story.
-                Log.e("TAG", "**** 2 - Last index :: true ****")
                 mMiStoryPlayerListener?.onFinishedPlaying(isAtLastIndex = true)
                 return
             }
@@ -381,7 +371,7 @@ class MiStoryHorizontalProgressView : View {
 
                     if (!isRunning || !isStarted || isCancelled)
                         postDelayed({
-                            startAnimating(currentIndex, "Two") // Move to next story
+                            startAnimating(currentIndex) // Move to next story
                         }, 200)
                 }
             }
@@ -398,7 +388,6 @@ class MiStoryHorizontalProgressView : View {
         if (currentIndex == INITIAL_STORY_INDEX) {
             // Move to previous story if exists,
             // If you are at the 1st index.
-            Log.e("TAG", "**** 3 - Last index :: false ****")
             mMiStoryPlayerListener?.onFinishedPlaying(isAtLastIndex = false)
         } else {
             // Move to previous story point until
@@ -464,6 +453,5 @@ class MiStoryHorizontalProgressView : View {
         fun onStartedPlaying(index: Int)
         fun onStoryFinished(index: Int) {}
         fun onFinishedPlaying(isAtLastIndex: Boolean)
-        fun getCurrentTime(elapsedTime: Long, totalDuration: Long) {}
     }
 }

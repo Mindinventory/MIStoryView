@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -34,7 +33,6 @@ class MiStoryDisplayFragment(
 ) : Fragment(), MiStoryHorizontalProgressView.MiStoryPlayerListener, GestureListener {
 
     private lateinit var miGestureDetector: GestureDetector
-    private val TAG = javaClass.simpleName
     private lateinit var mBinding: FragmentMiStoryDisplayBinding
     private var isLongPressEventOccurred = false
 
@@ -59,7 +57,6 @@ class MiStoryDisplayFragment(
     private val playerListener = object : Player.Listener {
         override fun onIsLoadingChanged(isLoading: Boolean) {
             super.onIsLoadingChanged(isLoading)
-            Log.e("TAG", "**** isLoading :: $isLoading ****")
             if (isLoading)
                 mBinding.dpvProgress.pause()
         }
@@ -68,38 +65,32 @@ class MiStoryDisplayFragment(
             super.onPlaybackStateChanged(playbackState)
             when (playbackState) {
                 Player.STATE_BUFFERING -> {
-                    Log.e("TAG", "**** STATE_BUFFERING ****")
                     pausePlayer()
                 }
 
                 Player.STATE_READY -> {
                     unblockInput()
                     isResourceReady = true
-                    Log.e("TAG", "**** Duration :: ${exoPlayer?.duration} ****")
                     resumePlayer()
                     if (!isCurrentStoryFinished) {
-                        Log.e("TAG", "**** Story running ****")
                         mBinding.dpvProgress.resume()
                     } else {
-                        Log.e("TAG", "**** Story start over ****")
                         isCurrentStoryFinished = false
                         if (isResumed && isVisible) {
                             miStoryDisplayViewModel.updateStoryPoint(lastStoryPointIndex)
 
                             mBinding.dpvProgress.apply {
                                 setSingleStoryDisplayTime(exoPlayer?.duration)
-                                startAnimating(lastStoryPointIndex, "Three")
+                                startAnimating(lastStoryPointIndex)
                             }
                         }
                     }
                 }
 
                 Player.STATE_ENDED -> {
-                    Log.e("TAG", "**** STATE_ENDED ****")
                 }
 
                 Player.STATE_IDLE -> {
-                    Log.e("TAG", "**** STATE_IDLE ****")
                 }
             }
         }
@@ -185,7 +176,7 @@ class MiStoryDisplayFragment(
                 if (mStories[lastStoryPointIndex].isMediaTypeVideo.not()) {
                     mBinding.dpvProgress.setSingleStoryDisplayTime(storyDuration)
                     // Initial entry point for progress animation.
-                    startAnimating(lastStoryPointIndex, "Four")
+                    startAnimating(lastStoryPointIndex)
                 }
             }
 
@@ -300,7 +291,6 @@ class MiStoryDisplayFragment(
     }
 
     override fun onStoryFinished(index: Int) {
-        Log.e("TAG", "**** onStoryFinished invoked index :: $index ****")
         pausePlayer()
         isCurrentStoryFinished = true
 
@@ -311,14 +301,6 @@ class MiStoryDisplayFragment(
             if (mStories[index + 1].isMediaTypeVideo.not())
                 mBinding.dpvProgress.setSingleStoryDisplayTime(storyDuration)
         }
-    }
-
-    override fun getCurrentTime(elapsedTime: Long, totalDuration: Long) {
-        val remainingTime = totalDuration - elapsedTime
-        val hours = (remainingTime / (1000 * 60 * 60)).toInt()
-        val minutes = (remainingTime % (1000 * 60 * 60)).toInt() / (1000 * 60)
-        val seconds = (remainingTime % (1000 * 60 * 60) % (1000 * 60) / 1000).toInt()
-        mBinding.tvElapsedTime.text = String.format("%02d:%02d:%02d", hours, minutes, seconds)
     }
 
     /**
@@ -332,7 +314,6 @@ class MiStoryDisplayFragment(
      * Callback to MiStoryDisplayActivity
      */
     override fun onFinishedPlaying(isAtLastIndex: Boolean) {
-        Log.e("TAG", "**** onFinishedPlaying :: $lastStoryPointIndex ****")
         if (isAtLastIndex)
             invokeNextStory?.invoke(lastStoryPointIndex)
         else

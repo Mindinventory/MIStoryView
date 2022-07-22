@@ -49,36 +49,38 @@ dependencies {
 ```
 
 **Implementation**
-* Step 1 : Provide a list of stories. (Note : Use MiUserStoryModel class only to provide list of stories)
+* Step 1 : Provide a list of stories. (Note : Use MiUserStoryModel class only to provide list of stories and for json file see in assets folder of demo app.)
 
         class MainViewModel : ViewModel() {
-                val mListOfUsers: ArrayList<MiUserStoryModel> = ArrayList()
+		    val mListOfUsers: ArrayList<MiUserStoryModel> = ArrayList()
 
-                init {
-                        mListOfUsers.add(MiUserStoryModel("1", "Johny Curtis", ArrayList()).also {
-                                it.userStoryList.add(
-                                        MiStoryModel(
-                                        "https://i.picsum.photos/id/0/5616/3744.jpg?hmac=3GAAioiQziMGEtLbfrdbcoenXoWAW-zlyEAMkfEdBzQ",
-                                        "Johny Depp",
-                                        "10:08 PM"
-                                        )
-                                )
-                                it.userStoryList.add(
-                                        MiStoryModel(
-                                        "https://i.picsum.photos/id/1/5616/3744.jpg?hmac=kKHwwU8s46oNettHKwJ24qOlIAsWN9d2TtsXDoCWWsQ",
-                                        "Johny Depp",
-                                        "07:50 AM"
-                                        )
-                                )
-                        })
-                }
+		    fun readAssetsData(context: Context): String {
+			val json: String?
+			try {
+			    val inputStream = context.assets.open("storyData.json")
+			    val size = inputStream.available()
+			    val buffer = ByteArray(size)
+			    inputStream.read(buffer)
+			    inputStream.close()
+			    json = java.lang.String(buffer, "UTF-8").toString()
 
-                fun updateListOfUser(mListOfUsers: ArrayList<MiUserStoryModel>) {
-                        this.mListOfUsers.clear()
-                        this.mListOfUsers.addAll(mListOfUsers)
-                }        
-                
-        }
+			    mListOfUsers.addAll(
+				Gson().fromJson(
+				    json, object : TypeToken<ArrayList<MiUserStoryModel?>?>() {}.type
+				)
+			    )
+			} catch (ex: IOException) {
+			    ex.printStackTrace()
+			    return ""
+			}
+			return json
+		    }
+
+		    fun updateListOfUser(mListOfUsers: ArrayList<MiUserStoryModel>) {
+			this.mListOfUsers.clear()
+			this.mListOfUsers.addAll(mListOfUsers)
+		    }
+		}
 
 * Step 2 : Inflate recyclerview in your layout file.
 

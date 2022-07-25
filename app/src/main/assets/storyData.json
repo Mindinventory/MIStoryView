@@ -1,0 +1,271 @@
+[
+  {
+    "id": "1",
+    "lastStoryPointIndex": 0,
+    "userName": "Johny Curtis",
+    "userStoryList": [
+      {
+        "isMediaTypeVideo": false,
+        "isStorySeen": false,
+        "mediaType": "IMAGE",
+        "mediaUrl": "https://media.giphy.com/media/L1fMIqeN3LJmnRYUxh/giphy.gif",
+        "name": "Johny Curtis",
+        "time": "07:10 AM"
+      },
+      {
+        "isMediaTypeVideo": false,
+        "isStorySeen": false,
+        "mediaType": "IMAGE",
+        "mediaUrl": "https://i.picsum.photos/id/1008/5616/3744.jpg?hmac=906z84ml4jhqPMsm4ObF9aZhCRC-t2S_Sy0RLvYWZwY",
+        "name": "Johny Curtis",
+        "time": "07:10 AM"
+      },
+      {
+        "isMediaTypeVideo": true,
+        "isStorySeen": false,
+        "mediaType": "VIDEO",
+        "mediaUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+        "name": "Johny Curtis",
+        "time": "07:55 AM"
+      },
+      {
+        "isMediaTypeVideo": true,
+        "isStorySeen": false,
+        "mediaType": "VIDEO",
+        "mediaUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+        "name": "Johny Curtis",
+        "time": "08:15 AM"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "lastStoryPointIndex": 0,
+    "userName": "Adam White",
+    "userStoryList": [
+      {
+        "isMediaTypeVideo": true,
+        "isStorySeen": false,
+        "mediaType": "VIDEO",
+        "mediaUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        "name": "Adam White",
+        "time": "05:25 AM"
+      },
+      {
+        "isMediaTypeVideo": true,
+        "isStorySeen": false,
+        "mediaType": "VIDEO",
+        "mediaUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+        "name": "Adam White",
+        "time": "05:28 AM"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "lastStoryPointIndex": 0,
+    "userName": "Mia Harvey",
+    "userStoryList": [
+      {
+        "isMediaTypeVideo": true,
+        "isStorySeen": false,
+        "mediaType": "VIDEO",
+        "mediaUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        "name": "Mia Harvey",
+        "time": "12:38 AM"
+      },
+      {
+        "isMediaTypeVideo": false,
+        "isStorySeen": false,
+        "mediaType": "IMAGE",
+        "mediaUrl": "https://i.picsum.photos/id/1008/5616/3744.jpg?hmac=906z84ml4jhqPMsm4ObF9aZhCRC-t2S_Sy0RLvYWZwY",
+        "name": "Mia Harvey",
+        "time": "12:38 AM"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "lastStoryPointIndex": 0,
+    "userName": "Kim Gorbachev",
+    "userStoryList": [
+      {
+        "isMediaTypeVideo": true,
+        "isStorySeen": false,
+        "mediaType": "VIDEO",
+        "mediaUrl": "https://player.vimeo.com/external/403295268.sd.mp4?s=3446f787cefa52e7824d6ce6501db5261074d479&profile_id=165&oauth2_token_id=57447761",
+        "name": "Kim Gorbachev",
+        "time": "07:30 PM"
+      },
+      {
+        "isMediaTypeVideo": false,
+        "isStorySeen": false,
+        "mediaType": "IMAGE",
+        "mediaUrl": "https://i.picsum.photos/id/1010/5184/3456.jpg?hmac=7SE0MNAloXpJXDxio2nvoshUx9roGIJ_5pZej6qdxXs",
+        "name": "Kim Gorbachev",
+        "time": "07:30 PM"
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "lastStoryPointIndex": 0,
+    "userName": "James Salis",
+    "userStoryList": [
+      {
+        "isMediaTypeVideo": true,
+        "isStorySeen": false,
+        "mediaType": "VIDEO",
+        "mediaUrl": "https://player.vimeo.com/external/409206405.sd.mp4?s=0bc456b6ff355d9907f285368747bf54323e5532&profile_id=165&oauth2_token_id=57447761",
+        "name": "James Salis",
+        "time": "09:55 AM"
+      },
+      {
+        "isMediaTypeVideo": false,
+        "isStorySeen": false,
+        "mediaType": "IMAGE",
+        "mediaUrl": "https://i.picsum.photos/id/1011/5472/3648.jpg?hmac=Koo9845x2akkVzVFX3xxAc9BCkeGYA9VRVfLE4f0Zzk",
+        "name": "James Salis",
+        "time": "09:55 AM"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "lastStoryPointIndex": 0,
+    "userName": "Peter Evans",
+    "userStoryList": [
+      {
+        "isMediaTypeVideo": true,
+        "isStorySeen": false,
+        "mediaType": "VIDEO",
+        "mediaUrl": "https://player.vimeo.com/external/403295710.sd.mp4?s=788b046826f92983ada6e5caf067113fdb49e209&profile_id=165&oauth2_token_id=57447761",
+        "name": "Peter Evans",
+        "time": "08:42 AM"
+      },
+      {
+        "isMediaTypeVideo": false,
+        "isStorySeen": false,
+        "mediaType": "IMAGE",
+        "mediaUrl": "https://i.picsum.photos/id/1015/6000/4000.jpg?hmac=aHjb0fRa1t14DTIEBcoC12c5rAXOSwnVlaA5ujxPQ0I",
+        "name": "Peter Evans",
+        "time": "08:42 AM"
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "lastStoryPointIndex": 0,
+    "userName": "Tim Johnson",
+    "userStoryList": [
+      {
+        "isMediaTypeVideo": true,
+        "isStorySeen": false,
+        "mediaType": "VIDEO",
+        "mediaUrl": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+        "name": "Tim Johnson",
+        "time": "05:29 PM"
+      },
+      {
+        "isMediaTypeVideo": false,
+        "isStorySeen": false,
+        "mediaType": "IMAGE",
+        "mediaUrl": "https://i.picsum.photos/id/1019/5472/3648.jpg?hmac=2mFzeV1mPbDvR0WmuOWSiW61mf9DDEVPDL0RVvg1HPs",
+        "name": "Tim Johnson",
+        "time": "05:29 PM"
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "lastStoryPointIndex": 0,
+    "userName": "Oliver Backy",
+    "userStoryList": [
+      {
+        "isMediaTypeVideo": true,
+        "isStorySeen": false,
+        "mediaType": "VIDEO",
+        "mediaUrl": "https://player.vimeo.com/external/394678700.sd.mp4?s=353646e34d7bde02ad638c7308a198786e0dff8f&profile_id=165&oauth2_token_id=57447761",
+        "name": "Oliver Backy",
+        "time": "09:44 AM"
+      },
+      {
+        "isMediaTypeVideo": false,
+        "isStorySeen": false,
+        "mediaType": "IMAGE",
+        "mediaUrl": "https://i.picsum.photos/id/1020/4288/2848.jpg?hmac=Jo3ofatg0fee3HGOliAIIkcg4KGXC8UOTO1dm5qIIPc",
+        "name": "Oliver Backy",
+        "time": "09:44 AM"
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "lastStoryPointIndex": 0,
+    "userName": "Charlie Leo",
+    "userStoryList": [
+      {
+        "isMediaTypeVideo": true,
+        "isStorySeen": false,
+        "mediaType": "VIDEO",
+        "mediaUrl": "https://player.vimeo.com/external/405333429.sd.mp4?s=dcc3bdec31c93d87c938fc6c3ef76b7b1b188580&profile_id=165&oauth2_token_id=57447761",
+        "name": "Charlie Leo",
+        "time": "08:19 PM"
+      },
+      {
+        "isMediaTypeVideo": false,
+        "isStorySeen": false,
+        "mediaType": "IMAGE",
+        "mediaUrl": "https://i.picsum.photos/id/1021/2048/1206.jpg?hmac=fqT2NWHx783Pily1V_39ug_GFH1A4GlbmOMu8NWB3Ts",
+        "name": "Charlie Leo",
+        "time": "08:19 PM"
+      }
+    ]
+  },
+  {
+    "id": "10",
+    "lastStoryPointIndex": 0,
+    "userName": "Don Parker",
+    "userStoryList": [
+      {
+        "isMediaTypeVideo": true,
+        "isStorySeen": false,
+        "mediaType": "VIDEO",
+        "mediaUrl": "https://player.vimeo.com/external/363465031.sd.mp4?s=15b706ccd3c0e1d9dc9290487ccadc7b20fff7f1&profile_id=165&oauth2_token_id=57447761",
+        "name": "Charlie Leo",
+        "time": "08:19 PM"
+      },
+      {
+        "isMediaTypeVideo": false,
+        "isStorySeen": false,
+        "mediaType": "IMAGE",
+        "mediaUrl": "https://i.picsum.photos/id/1025/4951/3301.jpg?hmac=_aGh5AtoOChip_iaMo8ZvvytfEojcgqbCH7dzaz-H8Y",
+        "name": "Don Parker",
+        "time": "11:27 PM"
+      }
+    ]
+  },
+  {
+    "id": "11",
+    "lastStoryPointIndex": 0,
+    "userName": "Brooke Hayes",
+    "userStoryList": [
+      {
+        "isMediaTypeVideo": true,
+        "isStorySeen": false,
+        "mediaType": "VIDEO",
+        "mediaUrl": "https://player.vimeo.com/external/422787651.sd.mp4?s=ec96f3190373937071ba56955b2f8481eaa10cce&profile_id=165&oauth2_token_id=57447761",
+        "name": "Brooke Hayes",
+        "time": "03:44 PM"
+      },
+      {
+        "isMediaTypeVideo": false,
+        "isStorySeen": false,
+        "mediaType": "IMAGE",
+        "mediaUrl": "https://i.picsum.photos/id/1028/5184/3456.jpg?hmac=WhttNfn25eTgLTNnhRujSq4IVjx2mMa6wvPG1c6qMVc",
+        "name": "Brooke Hayes",
+        "time": "03:44 PM"
+      }
+    ]
+  }
+]

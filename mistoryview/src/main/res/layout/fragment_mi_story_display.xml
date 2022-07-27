@@ -3,16 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/black">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivMiStoryImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.exoplayer2.ui.StyledPlayerView
+        android:id="@+id/videoPlayerContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:animation_enabled="true"
+        app:buffered_color="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:resize_mode="fit"
+        app:show_buffering="always"
+        app:show_shuffle_button="false"
+        app:show_vr_button="false"
+        app:surface_type="texture_view"
+        app:use_artwork="true"
+        app:use_controller="false" />
+
+    <View
+        android:id="@+id/controlView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <com.mistory.mistoryview.ui.MiStoryHorizontalProgressView
         android:id="@+id/dpvProgress"
@@ -26,7 +52,7 @@
         app:miProgressBarPrimaryColor="#ffffff"
         app:miProgressBarSecondaryColor="#3effffff" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +65,7 @@
         app:layout_constraintTop_toBottomOf="@+id/dpvProgress"
         tools:text="Akfjklajfkdjfadjfsdka fadklfjlfj" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,5 +75,19 @@
         android:textColor="@color/white"
         android:textSize="@dimen/sp_12"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvName" />
+        app:layout_constraintTop_toBottomOf="@+id/tvName"
+        tools:text="@tools:sample/cities" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvElapsedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:fontFamily="sans-serif-black"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@id/tvTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvName"
+        tools:text="@tools:sample/cities" />
 </androidx.constraintlayout.widget.ConstraintLayout>

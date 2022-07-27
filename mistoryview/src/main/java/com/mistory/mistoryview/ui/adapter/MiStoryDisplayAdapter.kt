@@ -18,10 +18,4 @@ class MiStoryDisplayAdapter(
     override fun createFragment(position: Int): Fragment = MiStoryDisplayFragment.newInstance(
         position, invokeNextStory, invokePreviousStory
     )
-
-    fun setNextPreviousStoryData(position: Int) {
-        MiStoryDisplayFragment.newInstance(
-            position, invokeNextStory, invokePreviousStory
-        )
-    }
 }

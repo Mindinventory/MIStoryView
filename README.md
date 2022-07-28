@@ -7,7 +7,7 @@ MiStoryView is a simple configurable library to integrate stories features into 
 
 # Key features
 * Set a list of image/video/GIF URLs in MiStoryView.
-* Set fixed duration for particular story for media type Image/GIF only (in milliseconds).
+* Set fixed duration for particular story of media type Image/GIF only (in milliseconds).
 * Duration for media type Video will be set automatically.
 * Set any of the predefined animations, while swiping between multiple stories.
 * Move to the back and forth story by tapping on the right and left parts of an image.

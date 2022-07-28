@@ -419,6 +419,9 @@ class MiStoryDisplayFragment(
     fun pauseExoPlayer(draggingState: Int) {
         if (draggingState == SCROLL_STATE_DRAGGING) {
             exoPlayer?.playWhenReady = false
+            // Pause GIF if user starts swiping.
+            if (animatedDrawable != null)
+                animatedDrawable?.stop()
         }
     }
 
